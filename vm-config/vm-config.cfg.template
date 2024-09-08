@@ -1,0 +1,31 @@
+vm_name="vmanme-18-100"
+vm_desc="关于虚拟机的描述"
+
+#deploy_json_file=deploy-windows.json
+#deploy_json_file=deploy-linux.json
+
+#temp_name="windows2019-template" temp_id=123
+#temp_name="windows2022-template" temp_id=126
+#temp_name="ubuntu2404-template" temp_id=133
+#temp_name="euler2203-template" temp_id=140
+#temp_name="centos7-template" temp_id=93
+#temp_name="kylin10-template" temp_id=96
+
+# Host ID: 7 - 12
+host_id=12
+
+# Datastore: datestore01 - datastore03
+datastore="datastore03"
+
+vs_name="vswitch-app"
+net_profile="Default"
+
+cpu_core=1
+cpu_socket=2
+memory=16384
+
+ip="192.168.18.100"
+mask="255.255.255.0"
+gate="192.168.18.254"
+dns1="192.168.18.252"
+dns2="192.168.19.252"

@@ -1,0 +1,80 @@
+/cas/casrs/vm/vlanResourceList:
+  get:
+    tags: [vm]
+    summary: 查询VLAN分配统计信息
+    description: 查询VLAN分配统计信息
+    consumes: [application/xml, application/json]
+    produces: [application/xml, application/json]
+    parameters: [{name: vlanId, type: integer, format: int32, description: VLANID, in: query, required: true},
+                 {name: offset, type: integer, format: int64, description: 返回的第一条记录在总结果集中的位置。, in: query, required: false},
+                 {name: limit, type: integer, format: int32, description: 返回记录总数。, in: query, required: false},
+                 {name: sortDir, type: integer, format: int32, description: 排序方式 0 不排序 1 顺序 2 逆序, in: query, required: false},
+                 {name: sortField, type: string, description: 排序字段, in: query, required: false}]
+    responses:
+      '200':
+        description: 查询成功
+        schema:
+          $ref: '#/definitions/RsDomainResListResult'
+      '401': { description: 请求未授权 }
+      '409': { description: 请求发生业务性错误, headers: { Error-Code: { type: integer, description: 业务错误码 }, Error-Message: { type: string, description: 对业务错误的描述 } } }
+
+
+RsDomainResListResult:
+  type: object
+  xml: { name: list }
+  properties:
+    domain:
+      type: array
+      xml: { name: domain}
+      items:
+        type: object
+        xml: { name: domain }
+        properties:
+          id: { type: integer, format: int64, description: 虚拟机ID。, example: 1200,  xml: { name: id } }
+          uuid: { type: string, description: 虚拟机UUID。, example: 4e5d4f38-bc37-481e-a930-07e000ad29dd,  xml: { name: uuid } }
+          name: { type: string, description: 虚拟机名称。, example: vm-120,  xml: { name: name } }
+          title: { type: string, description: 虚拟机显示名称。, example: vm-120,  xml: { name: title } }
+          hsotId: { type: integer, format: int64, description: 主机ID。, example: 1,  xml: { name: hsotId } }
+          clusterId: { type: integer, format: int64, description: 集群ID。, example: 1,  xml: { name: clusterId } }
+          hostPoolId: { type: integer, format: int64, description: 主机池ID。, example: 1,  xml: { name: hostPoolId } }
+          cpu: { type: string, description: 虚拟机CPU个数。, example: 4, xml: { name: cpu } }
+          memory: { type: integer, format: int64, description: 虚拟机内存，单位MB。, example: 1024, xml: { name: memory } }
+          status: { type: integer, format: int32, description: 虚拟状态。0 模板 1 未知 2 运行 3 关闭 4 暂停。,  example: 0, xml: { name: status } }
+
+
+
+
+#POST，PUT方法的body参数写法
+  parameters:
+    - name: list
+      in: body
+      description: UUID列表。
+      required: true
+      schema:
+        type: array
+        xml: {name: uuidList}
+        items:
+          uuid: {type: string, description: uuid, example: 4e5d4f38-bc37-481e-a930-07e000ad29dd, xml: {name: uuid}}
+
+#array
+RsDomainBasicInfoList:
+  type: object
+  xml: { name: list }
+  properties:
+    domain:
+      type: array
+      xml: { name: domain}
+      items:
+        type: object
+        xml: { name: domain }
+        properties:
+          id: { type: integer, format: int64, description: 虚拟机ID。, example: 1200,  xml: { name: id } }
+          uuid: { type: string, description: 虚拟机UUID。, example: 4e5d4f38-bc37-481e-a930-07e000ad29dd,  xml: { name: uuid } }
+
+#返回task
+responses:
+  '200':
+    description: 操作成功
+    schema:
+      $ref: '#/definitions/RsTaskMsg'
+

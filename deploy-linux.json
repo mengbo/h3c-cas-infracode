@@ -1,0 +1,41 @@
+{
+  "id": $temp_id,
+  "title": "$vm_name",
+  "useLocalStorageFlag": 0,
+  "domainName": "$vm_name",
+  "deployMode": 0,
+  "protectMode": 0,
+  "hostBinding": 0,
+  "deployType": 1,
+  "targetHostId": $host_id,
+  "desc": "$vm_desc",
+  "diskFormat": "qcow2",
+  "osInfo": {
+    "initType": 0,
+    "sysName": "$vm_name",
+    "isBindIp": false,
+    "sysIp": "$ip",
+    "sysMask": "$mask",
+    "sysGateway": "$gate",
+    "sysdns": "$dns1",
+    "secondaryDns": "$dns2"
+  },
+  "vmType": 1,
+  "network": [
+    {
+      "vSwitchName": "$vs_name",
+      "profileName": "$net_profile"
+    }
+  ],
+  "storage": [
+    {
+      "src": "$temp_name",
+      "dest": "$vm_name",
+      "pool": "$datastore"
+    }
+  ],
+  "cpuCore": $cpu_core,
+  "cpuSocket": $cpu_socket,
+  "memory": $memory,
+  "kaasVm": 0
+}

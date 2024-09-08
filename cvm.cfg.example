@@ -1,0 +1,4 @@
+USER="your_username"
+PASS="your_password"
+SERVICE="https://cvm.server.com:8443"
+WIN_ADMIN_PASS="win_admin_pass"
