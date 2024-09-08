@@ -1,4 +1,4 @@
-# h3c-cas-lnu
+# h3c-cas-infracode
 
 Simple Infrastructure as Code scripts for H3C CAS system virtual machine deployment.
 
