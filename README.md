@@ -90,9 +90,9 @@ Simple Infrastructure as Code scripts for H3C CAS system virtual machine deploym
 
 ## 已知问题
 
-### 欧拉安装
+### 最新系统
 
-openEuler 24.03 LTS 根本无法安装，直接 Kernel Panic 挂掉，22.03版本可以正常安装。
+多个 Linux 发行版最新系统无法安装，直接 Kernel Panic 挂掉。需要 CPU 工作模式选择“主机匹配模式“或者”直通模式“ 才能解决。
 
 ### 龙蜥部署
 
