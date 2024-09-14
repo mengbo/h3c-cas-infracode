@@ -1,6 +1,6 @@
-# h3c-cas-infracode
+# H3C CAS 系统虚拟机自动化部署
 
-Simple Infrastructure as Code scripts for H3C CAS system virtual machine deployment.
+DevOps scripts for Liaoning University H3C CAS System
 
 本方案参考了 [VMware vSphere 系统虚拟机自动化部署](https://segmentfault.com/a/1190000042686820)，不同的是采用 Shell 脚本执行 [HTTPie](https://httpie.io/) 命令来调用 H3C CAS RESTFul Web Services API。
 
@@ -32,6 +32,12 @@ Simple Infrastructure as Code scripts for H3C CAS system virtual machine deploym
 
 虚拟机第一次启动后，需要等待几分钟才能把初始化的配置做完，然后就可以正常使用了。
 
+对于部分新版本的 Linux 操作系统，由于网络配置方式以及文件系统的变化，部署虚拟机时会提示“部分成功”，原因是“配置操作系统信息出错“。针对此情况，需要在制作模版时上传 `/usr/local/bin/linux-virt-netconf.sh` 脚本，这样在虚拟机启动后执行如下命令就可以顺利配置网络等信息：
+
+```
+./cas-netconf.sh vm-config/vm-name.cfg
+```
+
 ## 模版制备
 
 ### Linux 
@@ -54,6 +60,8 @@ Simple Infrastructure as Code scripts for H3C CAS system virtual machine deploym
 	- `sudo` 执行光盘中安装脚本完成安装。
 	- 操作系统中执行 `sudo umount /media` 卸载光驱。
 	- 在CAS 管理界面中清理虚拟机光驱配置。
+- 新版本操作系统需要上传网络配置脚本。
+	- 上传 `linux-virt-netconf.sh` 到 `/usr/local/bin` 目录。
 - 清理虚拟机操作系统。
 	- CAS 管理界面中修改虚拟机网络配置，手工配置 IP 地址。
 	- 上传 `linux-virt-sysprep.sh` 脚本。
@@ -97,6 +105,18 @@ Simple Infrastructure as Code scripts for H3C CAS system virtual machine deploym
 ### 龙蜥部署
 
 Anolis 8.9 安装后，CAStools 工作不正常，利用其修改地址后需要重新启动才能生效，所以在通过模版部署系统后，需要重启两次系统，新生成的虚拟机才能正常工作。
+
+Anolis 23 安装后，CAStools 工作不正常，其原因比较复杂，涉及旧版本 libguestfs 库和新版本 XFS 文件的兼容性问题，可以通过 `guestfish` 调试明确故障原因，但估计需要 CAS 系统升级才能解决，类似兼容性问题难以完全消除。目前的解决方案是通过 Qemu Agent 命令来解决问题，且 CAS 的 Web API 也有相应的调用接口。以下是命令行执行 Qemu Agent 命令的例子：
+
+```shell-session
+[root@cvknode ~]# virsh qemu-agent-command vm-name '{"execute": "guest-exec", "arguments": {"path": "/usr/bin/cat", "arg": ["/etc/os-release"], "capture-output": true}}'
+{"return":{"pid":1099}}
+
+[root@cvknode ~]# virsh qemu-agent-command vm-name '{"execute": "guest-exec-status", "arguments": {"pid": 1099}}'
+{"return":{"exitcode":0,"out-data":"...","exited":true}}
+```
+
+具体实现时为了方便起见，需要在模版中增加 `/usr/local/bin/linux-virt-netconf.sh` 脚本，通过调用该脚本来配置虚拟机的主机名和 IP 地址。
 
 ### 文档错误
 

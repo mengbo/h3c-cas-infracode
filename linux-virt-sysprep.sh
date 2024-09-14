@@ -88,7 +88,7 @@ generalize() {
 
 sysprep() {
     source /etc/os-release
-    if [[ $ID =~ (fedora|rhel|centos|kylin|openEuler) || $ID_LIKE =~ (fedora|rhel|centos) ]]; then
+    if [[ $ID =~ (kylin|openEuler|anolis) || $ID_LIKE =~ (fedora|rhel|centos) ]]; then
         FEDORA_DERIV=true
     elif [[ $ID =~ (debian|ubuntu|mint) || $ID_LIKE =~ (debian|ubuntu|mint) ]]; then
         DEBIAN_DERIV=true
